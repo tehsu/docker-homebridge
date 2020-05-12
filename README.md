@@ -1,8 +1,11 @@
-[![Donate](https://img.shields.io/badge/donate-paypal-yellowgreen.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZEW8TFQCU2MSJ&source=url) [![Docker Build Status](https://img.shields.io/travis/oznu/docker-homebridge/master.svg?label=amd64%20build)](https://hub.docker.com/r/oznu/homebridge/) [![Travis](https://img.shields.io/travis/oznu/docker-homebridge/master.svg?label=arm%20build)](https://travis-ci.org/oznu/docker-homebridge) [![Docker Pulls](https://img.shields.io/docker/pulls/oznu/homebridge.svg)](https://hub.docker.com/r/oznu/homebridge/)
+[![Donate](https://img.shields.io/badge/donate-paypal-yellowgreen.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZEW8TFQCU2MSJ&source=url)
+[![Docker Build Status](https://github.com/oznu/docker-homebridge/workflows/Build/badge.svg)](https://github.com/oznu/docker-homebridge/actions)
+[![Docker Pulls](https://img.shields.io/docker/pulls/oznu/homebridge.svg)](https://hub.docker.com/r/oznu/homebridge/)
+[![Discord](https://img.shields.io/discord/432663330281226270?color=728ED5&logo=discord&label=discord)](https://discord.gg/Cmq8a44)
 
 # Docker Homebridge
 
-This Alpine/Debian Linux based Docker image allows you to run [Nfarina's](https://github.com/nfarina) [Homebridge](https://github.com/nfarina/homebridge) on your home network which emulates the iOS HomeKit API.
+This Alpine/Ubuntu Linux based Docker image allows you to run [Nfarina's](https://github.com/nfarina) [Homebridge](https://github.com/nfarina/homebridge) on your home network which emulates the iOS HomeKit API.
 
 This is a multi-arch image and will also run on a Raspberry Pi or other Docker-enabled ARMv6/7/8 devices.
 
@@ -62,7 +65,7 @@ The parameters are split into two halves, separated by a colon, the left hand si
 
 ##### *Optional Settings:*
 
-* `-e PACKAGES` - Additional [packages](https://pkgs.alpinelinux.org/packages) to install (comma separated, no spaces) e.g. `-e PACKAGES=ffmpeg,openssh`
+* `-e PACKAGES` - Additional [packages](https://pkgs.alpinelinux.org/packages) to install (comma separated, no spaces) e.g. `-e PACKAGES=openssh`
 * `-e TERMINATE_ON_ERROR=1` - If `TERMINATE_ON_ERROR` is set to `1` then the container will exit when the Homebridge process ends, otherwise it will be restarted.
 * `-e HOMEBRIDGE_INSECURE=1` - Start homebridge in insecure mode using the `-I` flag.
 * `-e HOMEBRIDGE_DEBUG=1` - Enable debug level logging using the `-D` flag.
@@ -173,45 +176,21 @@ You may need to provide the server name of your Synology NAS using the `DSM_HOST
 
 #### 3. Need ffmpeg?
 
-You can enable `ffmpeg` by adding this environment variable to your run command or docker-compose.yml:
+ffmpeg, with `libfdk-aac` audio support is included in this image.
+
+#### 4. Try the ubuntu tag
+
+Some plugins don't like Alpine Linux so this project also provides a Ubuntu based version of the image.
 
 ```
-PACKAGES=ffmpeg
-```
-
-#### 4. Try the debian tag
-
-Some plugins don't like Alpine Linux so this project also provides a Debian based version of the image.
-
-```
-docker run oznu/homebridge:debian
-docker run oznu/homebridge:debian-arm32v7
+docker run oznu/homebridge:ubuntu
 ```
 
 See the wiki for a list of image variants: https://github.com/oznu/docker-homebridge/wiki
 
-#### 5. Logs showing `Service name conflict` or `Host name conflict`
+#### 5. Ask on Discord
 
-You may need to use a `no-avahi` version of this image to prevent conflicts with the Avahi service running on the host:
-
-```shell
-# Alpine
-docker run oznu/homebridge:no-avahi
-docker run oznu/homebridge:no-avahi-arm32v6
-docker run oznu/homebridge:no-avahi-arm64v8
-
-# Debian
-docker run oznu/homebridge:debian-no-avahi
-docker run oznu/homebridge:debian-no-avahi-arm32v7
-```
-
-See the wiki for a list of image variants: https://github.com/oznu/docker-homebridge/wiki
-
-#### 6. Ask on Slack
-
-[![Slack Status](https://slackin-znyruquwmv.now.sh/badge.svg)](https://slackin-znyruquwmv.now.sh)
-
-Join the [Homebridge Slack](https://slackin-znyruquwmv.now.sh/) chat and ask in the [#docker](https://homebridgeteam.slack.com/messages/C961HJHCP) channel.
+Join the [Official Homebridge Discord](https://discord.gg/Cmq8a44) community and ask in the [#docker](https://discord.gg/Cmq8a44) channel.
 
 ## License
 

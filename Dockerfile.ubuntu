@@ -1,8 +1,11 @@
 ARG S6_ARCH
-FROM oznu/s6-node:12.16.3-${S6_ARCH:-amd64}
+FROM oznu/s6-node:12.16.3-ubuntu-${S6_ARCH:-amd64}
 
-RUN apk add --no-cache git python make g++ avahi-compat-libdns_sd avahi-dev dbus \
-    iputils sudo nano \
+RUN apt-get update \
+  && apt-get install -y git python make g++ libnss-mdns avahi-discover libavahi-compat-libdnssd-dev \
+    net-tools iproute2 sudo nano \
+  && apt-get clean \
+  && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* \
   && chmod 4755 /bin/ping \
   && mkdir /homebridge \
   && npm set global-style=true \
@@ -10,13 +13,12 @@ RUN apk add --no-cache git python make g++ avahi-compat-libdns_sd avahi-dev dbus
 
 RUN case "$(uname -m)" in \
     x86_64) FFMPEG_ARCH='x86_64';; \
-    armv6l) FFMPEG_ARCH='armv6l';; \
-    armv7l) FFMPEG_ARCH='armv6l';; \
+    armv7l) FFMPEG_ARCH='armv7l';; \
     aarch64) FFMPEG_ARCH='aarch64';; \
     *) echo "unsupported architecture"; exit 1 ;; \
     esac \
     && set -x \
-    && curl -Lfs https://github.com/oznu/ffmpeg-for-homebridge/releases/download/v0.0.1/ffmpeg-alpine-${FFMPEG_ARCH}.tar.gz | tar xzf - -C / --no-same-owner
+    && curl -Lfs https://github.com/oznu/ffmpeg-for-homebridge/releases/download/v0.0.1/ffmpeg-debian-${FFMPEG_ARCH}.tar.gz | tar xzf - -C / --no-same-owner
 
 ENV HOMEBRIDGE_VERSION=1.0.4
 RUN npm install -g --unsafe-perm homebridge@${HOMEBRIDGE_VERSION}
@@ -30,4 +32,4 @@ VOLUME /homebridge
 COPY root /
 
 ARG AVAHI
-ENV ENABLE_AVAHI="${AVAHI:-0}"
+ENV ENABLE_AVAHI="${AVAHI:-1}"
